@@ -17,6 +17,7 @@ export default class extends Phaser.Scene {
         this.load.image('building-shop', 'assets/sprite/building-shop.png');
         this.load.image('building-fuel', 'assets/sprite/building-fuel.png');
         this.load.image('building-factory', 'assets/sprite/building-factory.png');
+        this.load.image('motor', 'assets/sprite/motor.png');
     }
 
     create() {

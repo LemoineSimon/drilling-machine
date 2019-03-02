@@ -14,6 +14,7 @@ export default class extends Phaser.Scene {
             y: 400
         };
         this.money = 0;
+        this.shopOpen = false;
     }
 
     init() {
@@ -36,6 +37,7 @@ export default class extends Phaser.Scene {
         this.physics.add.collider(this.robot.entity, this.ground.group);
         this.setCollideBuildingsEffect();
         this.scene.launch('UiGame');
+        this.scene.launch('Shop');
     }
 
     update() {
@@ -103,21 +105,41 @@ export default class extends Phaser.Scene {
     }
 
     setCollideBuildingsEffect() {
-        this.fuelOverlap = this.physics.add.overlap(this.fuelBuilding, this.robot.entity, () => {
+        this.physics.add.overlap(this.fuelBuilding, this.robot.entity, () => {
             if (this.cursors.space.isDown) {
                 this.robot.fuel = this.robot.fuelMax;
                 this.events.emit('update-fuel', this.robot.fuel);
             }
         });
 
-        this.factoryOverlap = this.physics.add.overlap(this.factoryBuilding, this.robot.entity, () => {
+        this.physics.add.overlap(this.factoryBuilding, this.robot.entity, () => {
             if (this.cursors.space.isDown && Object.keys(this.robot.cargo).length > 0) {
                 Object.keys(this.robot.cargo).forEach((mineral) => {
                     this.money += this.robot.cargo[mineral] * this.config.minerals[mineral].price;
                 });
                 this.robot.cargo = {};
-                console.log(this.money)
             }
         });
+
+        this.physics.add.overlap(this.shopBuilding, this.robot.entity, () => {
+            if (this.cursors.space.isDown) {
+                setTimeout(() => {
+                    this.toggleShop();
+                }, 50)
+            }
+        })
+    }
+
+    toggleShop() {
+        console.log(this.shopOpen)
+        if (this.shopOpen) {
+            this.scene.sleep('Shop');
+            this.scene.resume();
+        } else {
+            this.scene.wake('Shop');
+            this.scene.pause();
+        }
+        this.shopOpen = !this.shopOpen;
+        console.log(this.shopOpen)
     }
 }

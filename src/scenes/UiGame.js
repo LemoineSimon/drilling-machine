@@ -11,7 +11,6 @@ export default class UiGame extends Phaser.Scene {
 
 
     create() {
-        console.log('ui');
         var r1 = this.add.rectangle(30, 30, 100, 15, 0xaaaaaa);
         r1.setDisplayOrigin(0, 0);
         this.fuelMask = this.add.rectangle(30, 30, 20, 15, 0xdddddd);
